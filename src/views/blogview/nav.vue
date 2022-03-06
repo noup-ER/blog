@@ -121,6 +121,7 @@ $icon_color: #5c2223;
   top: 0;
   left: 0;
   z-index: 50;
+  min-width: 200px;
 
   .titleBar{
     @include size(100%,100%);

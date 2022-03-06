@@ -22,10 +22,12 @@
 <script>
 import catalogue from "@/components/catalogue";
 import {instance} from "../../api/instance";
-import {showCodeLines,addStyles} from "@/plugins/show-code-lines"
+// import {showCodeLines,addStyles} from "@/plugins/show-code-lines"
 import hljs from "highlight.js"
-window.hljs = hljs;
-import 'highlight.js/styles/agate.css'
+import "highlight.js/styles/agate.css"
+import {hln} from "@/utils/highlightjs-line-numbers.js"
+
+hln(window,document,hljs);
 
 export default {
   name: "article",
@@ -64,7 +66,7 @@ export default {
   activated() {
     this.windowWidth = window.innerWidth;
     window.addEventListener("resize",this.changeLayout);
-    showCodeLines();
+    require("highlightjs-line-numbers.js")
   },
   deactivated() {
     this.clearArticle();
@@ -94,11 +96,9 @@ export default {
               document.querySelectorAll("img").forEach(item=>{
                 item.style.width = "100%";
               })
-              document.querySelectorAll("code").forEach(item=>{
-                item.classList.add("hljs");
+              document.querySelectorAll("pre code").forEach(item=>{
+                hljs.highlightBlock(item);
                 hljs.lineNumbersBlock(item);
-                console.log("coco");
-                addStyles();
               })
             })
             this.$forceUpdate();
@@ -114,6 +114,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
+
 $usual_transition:all .2s linear;
 
 .article{
@@ -152,10 +153,6 @@ $usual_transition:all .2s linear;
     word-break: break-all;
     position: relative;
     width: 100%;
-
-    .hljs-ln{
-      padding: 0.5rem;
-    }
   }
 
   .endBar{

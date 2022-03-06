@@ -27,7 +27,7 @@
     "html-webpack-plugin": "^4.4.0",
     "js2wordcloud": "^1.1.12",
     "lodash": "^4.17.21",
-    "mongodb": "^4.3.1",
+    "mongodb": "^4.4.1",
     "mysql": "^2.18.1",
     "nprogress": "^0.2.0",
     "qs": "^6.10.1",

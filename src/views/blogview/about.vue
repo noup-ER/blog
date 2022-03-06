@@ -32,7 +32,6 @@ export default {
     }
 
     p{
-      height: 3rem;
       line-height: 3rem;
     }
 

@@ -3,7 +3,9 @@
     <div class="interim">
       <img src="@/assets/photos/rose.svg" alt="瓶中玫瑰">
       <span class="counsel">看瓶中流年似水</span>
-      <div class="continue">continue</div>
+      <router-link to="/computerknowledge" tag="div">
+        <div class="continue">continue</div>
+      </router-link>
     </div>
   </div>
 </template>
