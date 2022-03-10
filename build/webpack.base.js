@@ -2,7 +2,6 @@ const path = require("path")
 //加入vueloader插件
 const VueLoaderPlugin = require('vue-loader/lib/plugin')
 
-
 //webpack打包时生成一个html容纳js
 const HTMLPlugin = require('html-webpack-plugin')
 
@@ -24,6 +23,7 @@ const config={
     output: {
         path: path.join(__dirname,"../dist"),
         filename: "js/[name].js",
+        publicPath: "/"
     },
     //loaders
     module: {
@@ -45,9 +45,9 @@ const config={
                 test:/\.vue$/,
                 use:['vue-loader']
             },
-            //处理图片
+            //处理图片及字体
             {
-                test: /\.(png|jpe?g|gif|svg)$/,
+                test: /\.(png|jpe?g|gif|svg|ttf|woff)$/,
                 use:[{
                     loader: 'url-loader',
                     options:{
@@ -130,8 +130,6 @@ const config={
         extensions: ['*', '.js', '.vue']
     }
 }
-
-
 
 
 module.exports = config;

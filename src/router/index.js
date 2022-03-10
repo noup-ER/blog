@@ -6,7 +6,7 @@ import router_url from "./router_url";
 Vue.use(Router);
 
 var router = new Router({
-  mode: 'hash',
+  mode: 'history',
   routes: router_url
 })
 

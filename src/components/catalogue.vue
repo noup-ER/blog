@@ -2,16 +2,20 @@
   <div class="catalogue">
     <ul v-for="item in classify_two_list" :key="item" @click="changeList">
       <li class="kindName_li" :id="'classtitle-'+item">{{item}}</li>
-      <li class="each_li" v-if="childrenList[item].show"
-          v-for="(article,index) in childrenList[item].articles"
-          :key="i+index" :id="'article-'+item+'-'+article._id"
-          :class="{'chosen_li':current_id === article._id}">{{article.title}}</li>
+      <div v-if="childrenList[item]!== undefined && childrenList[item].show">
+        <li class="each_li"
+            v-for="(article,index) in childrenList[item].articles"
+            :key="i+index" :id="'article-'+item+'-'+article._id"
+            :class="{'chosen_li':current_id === article._id}">{{article.title}}</li>
+      </div>
     </ul>
   </div>
 </template>
 
 <script>
-import {instance} from "@/api/instance";
+
+import {getClassifyTwoList,getArticleList} from "@/api/live_axios";
+
 export default {
   name: "catalogue",
   props:["classify_one"],
@@ -25,32 +29,34 @@ export default {
   methods:{
     //点击文章
     changeList(e){
-      const id = e.target.id;
-      if(/^classtitle-/.test(id)){
-        const classify_two = id.split("-")[1];
-        instance({
-          url:"/getArticleList",
-          methods: "get",
-          params:{
-            classify_one:this.classify_one,
-            classify_two:classify_two
-          }
-        }).then(res=>{
-          this.childrenList[classify_two].articles = res.data.articleList;
-          this.childrenList[classify_two].show = true;
-          this.$forceUpdate();
-        })
-      }else{
-        let temp = id.split("-")[2];
-        this.current_id = temp;
-        this.$router.replace(
-            {
-              query:{
-                id:this.current_id
+      try {
+        const id = e.target.id;
+        if(/^classtitle-/.test(id)){
+          const classify_two = id.split("-")[1];
+          getArticleList(window.btoa(this.classify_one),window.btoa(classify_two)).then(res=>{
+            try {
+              this.childrenList[classify_two].articles = res.data.article_list;
+              this.childrenList[classify_two].show = true;
+              this.$forceUpdate();
+            }catch (err){}
+          }).catch(err=>{
+            this.$message.info(err);
+          })
+        }else{
+          let temp = id.split("-")[2];
+          this.current_id = temp;
+          this.$router.replace(
+              {
+                query:{
+                  id:window.btoa(this.current_id)
+                }
               }
-            }
-        )
+          ).catch(err=>{})
+        }
+      }catch (err){
+        console.log(err);
       }
+
     }
   },
   watch:{
@@ -61,21 +67,16 @@ export default {
           return;
         }
         this.childrenList = {};
-        instance({
-          url:"/readClassifyTwo",
-          params:{
-            classify_one:newvalue
-          }
-        }).then(res=>{
-          if(res.data.code === 200){
-            this.classify_two_list = res.data["classify_two_list"];
-            res.data["classify_two_list"].forEach(obj=>{
-              this.childrenList[obj] = {
-                show:false,
-                articles:[]
-              }
-            })
-          }
+        getClassifyTwoList(newvalue).then(res=>{
+          this.classify_two_list = res.data["classify_two_list"];
+          res.data["classify_two_list"].forEach(obj=>{
+            this.childrenList[obj] = {
+              show:false,
+              articles:[]
+            }
+          })
+        }).catch(err=>{
+          this.$message.info(err);
         })
       },
       immediate:true

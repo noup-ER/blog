@@ -32,7 +32,8 @@
               :key="item" class="link_li" :id="'link2-'+item"
               :class="{'link_chosen_li':item === $route.name && item !=='Github'}">
             <span :id="'link2-'+item" v-if="item !== 'Github'">{{item}}</span>
-            <a class="Github_a" target="_blank" href="https://github.com/noup-ER?tab=repositories" v-else>{{item}}<svg class="Github_svg" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" width="32" height="32">
+            <a class="Github_a" target="_blank" href="https://github.com/noup-ER?tab=repositories" v-else>{{item}}
+              <svg class="Github_svg" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" width="32" height="32">
               <path d="M790.536784 923.653571 77.292364 923.653571 77.292364 228.828662 625.784486 228.828662
             625.784486 264.644379 113.108081 264.644379 113.108081 887.837854 753.697761 887.837854 753.697761
             410.977165 790.536784 410.977165Z" ></path>

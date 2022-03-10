@@ -5,7 +5,7 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "lint": "vue-cli-service lint",
-    "dev": "webpack-dev-server --progress --config build/webpack.dev.js",
+    "dev": "webpack-dev-server --mode=development --progress --config build/webpack.dev.js",
     "build": "cross-env NODE_ENV=production webpack --mode=production --progress --config build/webpack.prod.js"
   },
   "type": "commonjs",
@@ -19,6 +19,7 @@
     "cross-env": "^7.0.3",
     "css-loader": "^4.3.0",
     "dat-gui": "^0.5.0",
+    "element-ui": "^2.15.6",
     "eslint": "^7.32.0",
     "express": "^4.17.1",
     "gsap": "^3.8.0",

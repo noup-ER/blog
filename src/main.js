@@ -4,6 +4,12 @@ import router from './router'
 import axios from "axios";
 import store from "./store"
 
+import {Message} from "element-ui";
+import 'element-ui/lib/theme-chalk/index.css';
+Vue.component(Message.name,Message)
+Vue.prototype.$message = Message;
+
+
 Vue.config.productionTip = false;
 
 Vue.prototype.$axios = axios;

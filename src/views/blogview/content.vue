@@ -1,6 +1,6 @@
 <template>
   <div class="article">
-    <div :class="{'all1':windowWidth>=700,'all2':windowWidth<700}" v-if="article.time !== ''">
+    <div :class="{'all1':windowWidth>=700,'all2':windowWidth<700}" v-if="article.time !== ''" >
       <div class="title">
         <span>{{ article.title }}</span>
       </div>
@@ -13,26 +13,36 @@
         Writer: 林兆隆
       </div>
     </div>
-    <div :class="{'all1':windowWidth>=700,'all2':windowWidth<700}" v-if="article.time === ''">
-      hello world
-    </div>
+    <transition name="hp_ts">
+      <div :class="{'all1':windowWidth>=700,'all2':windowWidth<700}"
+           v-if="$route.path === '/computerknowledge' && article.time === ''">
+        <ckCover></ckCover>
+      </div>
+    </transition>
+    <transition name="hp_ts">
+      <div :class="{'all1':windowWidth>=700,'all2':windowWidth<700}"
+           v-if="$route.path === '/expriences' && article.time === ''">
+          <exCover></exCover>
+      </div>
+    </transition>
   </div>
 </template>
 
 <script>
 import catalogue from "@/components/catalogue";
-import {instance} from "../../api/instance";
-// import {showCodeLines,addStyles} from "@/plugins/show-code-lines"
+import {getArticleById} from "@/api/live_axios";
 import hljs from "highlight.js"
 import "highlight.js/styles/agate.css"
 import {hln} from "@/utils/highlightjs-line-numbers.js"
-
-hln(window,document,hljs);
+import ckCover from "@/components/ckCover"
+import exCover from "@/components/exCover";
 
 export default {
   name: "article",
   components:{
-    catalogue
+    catalogue,
+    ckCover,
+    exCover
   },
   data(){
     return{
@@ -66,7 +76,9 @@ export default {
   activated() {
     this.windowWidth = window.innerWidth;
     window.addEventListener("resize",this.changeLayout);
-    require("highlightjs-line-numbers.js")
+    if(!hljs.lineNumbersBlock){
+      hln(window,document,hljs);
+    }
   },
   deactivated() {
     this.clearArticle();
@@ -83,28 +95,28 @@ export default {
   watch:{
     getId:{
       handler:function (newvalue,oldvalue){
-        instance({
-          url:"/getArticleById",
-          method:"get",
-          params:{
-            id:newvalue
-          }
-        }).then(res=>{
-          if(res.data.code === 200){
-            this.article = res.data.article;
-            this.$nextTick(()=>{
-              document.querySelectorAll("img").forEach(item=>{
-                item.style.width = "100%";
-              })
-              document.querySelectorAll("pre code").forEach(item=>{
-                hljs.highlightBlock(item);
-                hljs.lineNumbersBlock(item);
-              })
+        if(!newvalue){
+          this.clearArticle();
+          return;
+        }
+        getArticleById(newvalue).then(res=>{
+          this.article = res.data.article;
+          this.$nextTick(()=>{
+            document.querySelectorAll("img").forEach(item=>{
+              item.style.width = "100%";
             })
-            this.$forceUpdate();
-          }else{
-            this.clearArticle();
-          }
+            document.querySelectorAll("pre code").forEach(item=>{
+              hljs.highlightBlock(item);
+              hljs.lineNumbersBlock(item);
+            })
+          })
+          this.$forceUpdate();
+        }).catch(err=>{
+          this.$message({
+            type:"error",
+            message:err
+          })
+          this.clearArticle();
         })
       },
       immediate:true
@@ -123,10 +135,11 @@ $usual_transition:all .2s linear;
 
   .all1{
     @include size(100%,100%);
-    padding-left: 27rem;
-    padding-right: 7rem;
+    padding-left: 22rem;
+    padding-right: 2rem;
     overflow: auto;
     transition: $usual_transition;
+    min-height: calc(100vh - 3.6rem);
   }
 
   .all2{
@@ -134,6 +147,7 @@ $usual_transition:all .2s linear;
     padding-left: 2rem;
     padding-right: 2rem;
     transition: $usual_transition;
+    min-height: calc(100vh - 3.6rem);
   }
 
   .title{
@@ -162,6 +176,17 @@ $usual_transition:all .2s linear;
     font-weight: 500;
     color: #4e6e8e;
   }
+}
+
+.hp_ts-enter,.hp_ts-leave-to{
+  opacity: 0;
+}
+.hp_ts-enter-active,.hp_ts-leave-active{
+  transition: all 1s linear;
+  position: absolute;
+}
+.hp_ts-enter-to,.hp_ts-leave{
+  opacity: 1;
 }
 
 </style>
