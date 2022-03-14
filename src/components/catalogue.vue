@@ -33,7 +33,7 @@ export default {
         const id = e.target.id;
         if(/^classtitle-/.test(id)){
           const classify_two = id.split("-")[1];
-          getArticleList(window.btoa(this.classify_one),window.btoa(classify_two)).then(res=>{
+          getArticleList(this.classify_one,classify_two).then(res=>{
             try {
               this.childrenList[classify_two].articles = res.data.article_list;
               this.childrenList[classify_two].show = true;
@@ -64,6 +64,8 @@ export default {
       handler:function (newvalue,oldvalue){
         if(newvalue!=="computerknowledge"&&newvalue!=="expriences"){
           this.current_id = "";
+          this.childrenList = [];
+          this.classify_two_list = [];
           return;
         }
         this.childrenList = {};
@@ -81,7 +83,7 @@ export default {
       },
       immediate:true
     }
-  }
+  },
 }
 </script>
 

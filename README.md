@@ -1,25 +1,19 @@
-# example
+# 林兆隆的博客
 
-## Project setup
+## 项目运行
 ```
 npm install
 ```
 
-### Compiles and hot-reloads for development
+### 启动本地项目
 ```
-npm run serve
+npm run dev
 ```
 
-### Compiles and minifies for production
+### 打包
 ```
 npm run build
 ```
 
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
-
+### 博客网址
+http://www.userect.top

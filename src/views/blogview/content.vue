@@ -25,12 +25,14 @@
           <exCover></exCover>
       </div>
     </transition>
+    <vueToTop type="0" right="2rem" v-if="windowWidth >= 700"></vueToTop>
   </div>
 </template>
 
 <script>
 import catalogue from "@/components/catalogue";
 import {getArticleById} from "@/api/live_axios";
+//代码高亮
 import hljs from "highlight.js"
 import "highlight.js/styles/agate.css"
 import {hln} from "@/utils/highlightjs-line-numbers.js"
@@ -71,6 +73,9 @@ export default {
         classify_two:"",
         time:""
       }
+    },
+    scroll_to_top(){
+      window.scrollTo(0,0)
     }
   },
   activated() {
@@ -133,21 +138,20 @@ $usual_transition:all .2s linear;
   width: 100%;
   padding-top: 3.6rem;
 
+
   .all1{
     @include size(100%,100%);
-    padding-left: 22rem;
-    padding-right: 2rem;
-    overflow: auto;
+    padding-left: 24rem;
+    padding-right: 4rem;
     transition: $usual_transition;
     min-height: calc(100vh - 3.6rem);
+    position: relative;
   }
 
   .all2{
-    @include size(100%,100%);
+    @extend .all1;
     padding-left: 2rem;
     padding-right: 2rem;
-    transition: $usual_transition;
-    min-height: calc(100vh - 3.6rem);
   }
 
   .title{
@@ -188,5 +192,6 @@ $usual_transition:all .2s linear;
 .hp_ts-enter-to,.hp_ts-leave{
   opacity: 1;
 }
+
 
 </style>

@@ -9,6 +9,9 @@ import 'element-ui/lib/theme-chalk/index.css';
 Vue.component(Message.name,Message)
 Vue.prototype.$message = Message;
 
+import vueToTop from 'vue-totop'
+Vue.use(vueToTop)
+
 
 Vue.config.productionTip = false;
 
