@@ -1,3 +1,5 @@
+import content from "@/views/blogview/content"
+
 export default [
     // {
     //   path:'/index',
@@ -10,22 +12,22 @@ export default [
     },
     {
         path:'/Home',
-        name: 'Home',
+        name: 'home',
         component: ()=>import("@/views/blogview/home")
     },
     {
         path: '/computerknowledge',
-        name: '计算机知识',
+        name: 'ck',
         component: ()=>import("@/views/blogview/content")
     },
     {
         path: '/expriences',
-        name: '经历感悟',
+        name: 'ex',
         component: ()=>import("@/views/blogview/content")
     },
     {
         path: '/about',
-        name: '关于',
+        name: 'about',
         component: ()=>import("@/views/blogview/about")
     }
 ]

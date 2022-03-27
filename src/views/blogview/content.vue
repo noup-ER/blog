@@ -1,6 +1,6 @@
 <template>
   <div class="article">
-    <div :class="{'all1':windowWidth>=700,'all2':windowWidth<700}" v-if="article.time !== ''" >
+    <div :class="{'all1':windowWidth>=700,'all2':windowWidth<700}" v-if="!showCover" >
       <div class="title">
         <span>{{ article.title }}</span>
       </div>
@@ -15,13 +15,13 @@
     </div>
     <transition name="hp_ts">
       <div :class="{'all1':windowWidth>=700,'all2':windowWidth<700}"
-           v-if="$route.path === '/computerknowledge' && article.time === ''">
+           v-if="$route.path === '/computerknowledge' && showCover">
         <ckCover></ckCover>
       </div>
     </transition>
     <transition name="hp_ts">
       <div :class="{'all1':windowWidth>=700,'all2':windowWidth<700}"
-           v-if="$route.path === '/expriences' && article.time === ''">
+           v-if="$route.path === '/expriences' && showCover">
           <exCover></exCover>
       </div>
     </transition>
@@ -30,12 +30,14 @@
 </template>
 
 <script>
+
 import catalogue from "@/components/catalogue";
 import {getArticleById} from "@/api/live_axios";
 //代码高亮
 import hljs from "highlight.js"
 import "highlight.js/styles/agate.css"
 import {hln} from "@/utils/highlightjs-line-numbers.js"
+
 import ckCover from "@/components/ckCover"
 import exCover from "@/components/exCover";
 
@@ -73,9 +75,11 @@ export default {
         classify_two:"",
         time:""
       }
-    },
-    scroll_to_top(){
-      window.scrollTo(0,0)
+    }
+  },
+  computed:{
+    showCover(){
+      return this.article.time === undefined || this.$route.query.id === undefined;
     }
   },
   activated() {
@@ -89,43 +93,28 @@ export default {
     this.clearArticle();
     window.removeEventListener("resize",this.changeLayout);
   },
-  computed:{
-    getRouteName(){
-      return this.$route.path.slice(1)
-    },
-    getId(){
-      return this.$route.query.id;
-    }
-  },
-  watch:{
-    getId:{
-      handler:function (newvalue,oldvalue){
-        if(!newvalue){
-          this.clearArticle();
-          return;
-        }
-        getArticleById(newvalue).then(res=>{
-          this.article = res.data.article;
-          this.$nextTick(()=>{
-            document.querySelectorAll("img").forEach(item=>{
-              item.style.width = "100%";
-            })
-            document.querySelectorAll("pre code").forEach(item=>{
-              hljs.highlightBlock(item);
-              hljs.lineNumbersBlock(item);
-            })
-          })
-          this.$forceUpdate();
-        }).catch(err=>{
-          this.$message({
-            type:"error",
-            message:err
-          })
-          this.clearArticle();
+  beforeRouteUpdate(to,from,next){
+    let id = to.query.id;
+    getArticleById(id).then(res=>{
+      this.article = res.data.article;
+      this.$nextTick(()=>{
+        document.querySelectorAll("img").forEach(item=>{
+          item.style.width = "100%";
         })
-      },
-      immediate:true
-    }
+        document.querySelectorAll("pre code").forEach(item=>{
+          hljs.highlightBlock(item);
+          hljs.lineNumbersBlock(item);
+        })
+        this.$forceUpdate();
+      })
+    }).catch(err=>{
+      this.$message({
+        type:"error",
+        message:err
+      })
+      this.clearArticle();
+    })
+    next();
   }
 }
 </script>

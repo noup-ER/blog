@@ -1,6 +1,7 @@
 <template>
   <div class="nav">
     <div class="titleBar">
+<!--      手机右上角标志-->
       <div class="nav_icon" v-if="mobile" @click="showLinksList = !showLinksList">
         <span class="icon_span---1" :class="{'icon_ts_span---1':showLinksList}"></span>
         <span class="icon_span---2" :class="{'icon_ts_span---2':showLinksList}"></span>
@@ -8,42 +9,48 @@
       </div>
       <span class="blogName">林兆隆的博客</span>
       <div class="linksBar" v-if="!mobile" @click="changePage">
-        <span class="link_span" v-for="item in ['Home','计算机知识','经历感悟','关于','Github']" :key="item"
-              :id="'link1-'+item"
-           :class="{'chosen_a':item === $route.name && item !=='Github'}">
-          <span v-if="item !== 'Github'" :id="'link1-'+item">{{item}}</span>
-          <a class="Github_a" target="_blank" href="https://github.com/noup-ER?tab=repositories" v-else>{{item}}<svg class="Github_svg" viewBox="0 0 1024 1024"
-                                    xmlns="http://www.w3.org/2000/svg" width="32" height="32">
-            <path d="M790.536784 923.653571 77.292364 923.653571 77.292364 228.828662 625.784486 228.828662
-            625.784486 264.644379 113.108081 264.644379 113.108081 887.837854 753.697761 887.837854 753.697761
-            410.977165 790.536784 410.977165Z" ></path>
-            <path d="M904.925691 115.801844l25.885344 25.885344-400.116482 400.116482-25.885344-25.885344
-            400.116482-400.116482Z"></path>
-            <path d="M932.909375 340.16233 896.369158 338.016457 908.096247 138.5311
-          708.61089 150.258189 706.465017 113.717971 947.06784 99.559507Z"></path></svg></a>
+        <span class="link_span" id="home" :class="{'chosen_a':'home' === $route.name}">
+          Home
         </span>
+        <span class="link_span" id="ck" :class="{'chosen_a':'ck' === $route.name}">
+          计算机知识
+        </span>
+        <span class="link_span" id="ex" :class="{'chosen_a':'ex' === $route.name}">
+          经历感悟
+        </span>
+        <span class="link_span" id="about" :class="{'chosen_a':'about' === $route.name}">
+          关于
+        </span>
+        <a class="Github_a" target="_blank" href="https://github.com/noup-ER?tab=repositories">
+          Github
+          <svg class="Github_svg" >
+            <use href="#Github_svg"></use>
+          </svg>
+        </a>
       </div>
     </div>
     <transition name="links_ts">
       <div class="links_container" :class="{'other':!mobile}"
-           v-show="(showLinksList&&mobile) || (/计算机知识|经历感悟/.test($route.name) && !mobile)">
+           v-show="(showLinksList&&mobile) || (/ck|ex/.test($route.name) && !mobile)">
         <ul class="links_ul" @click="changePage" v-if="mobile">
-          <li v-for="item in ['Home','计算机知识','经历感悟','关于','Github']"
-              :key="item" class="link_li" :id="'link2-'+item"
-              :class="{'link_chosen_li':item === $route.name && item !=='Github'}">
-            <span :id="'link2-'+item" v-if="item !== 'Github'">{{item}}</span>
-            <a class="Github_a" target="_blank" href="https://github.com/noup-ER?tab=repositories" v-else>{{item}}
-              <svg class="Github_svg" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" width="32" height="32">
-              <path d="M790.536784 923.653571 77.292364 923.653571 77.292364 228.828662 625.784486 228.828662
-            625.784486 264.644379 113.108081 264.644379 113.108081 887.837854 753.697761 887.837854 753.697761
-            410.977165 790.536784 410.977165Z" ></path>
-              <path d="M904.925691 115.801844l25.885344 25.885344-400.116482 400.116482-25.885344-25.885344
-            400.116482-400.116482Z"></path>
-              <path d="M932.909375 340.16233 896.369158 338.016457 908.096247 138.5311
-          708.61089 150.258189 706.465017 113.717971 947.06784 99.559507Z"></path></svg></a>
+          <li class="link_li" id="home" :class="{'link_chosen_li':'home' === $route.name}">Home</li>
+          <li class="link_li" id="ck" :class="{'link_chosen_li':'ck' === $route.name}">计算机知识</li>
+          <li class="link_li" id="ex" :class="{'link_chosen_li':'ex' === $route.name}">经历感悟</li>
+          <li class="link_li" id="about" :class="{'link_chosen_li':'about' === $route.name}">关于</li>
+          <li class="link_li">
+            <a class="Github_a" target="_blank" href="https://github.com/noup-ER?tab=repositories">
+              Github
+              <svg class="Github_svg" >
+                <use href="#Github_svg"></use>
+              </svg>
+            </a>
           </li>
         </ul>
-        <catalogue style="margin-top: 1rem" :classify_one="getRouteName"></catalogue>
+        <catalogue style="margin-top: 1rem" ref="cata"
+                   v-if="/ck|ex/.test($route.name)"
+                   :classify_two_list="classify_two_list"
+                   :childrenList="childrenList"
+                   @changeList="changeList($event,payloads)"></catalogue>
       </div>
     </transition>
     <div class="sider_mask" v-if="showLinksList && mobile" @click="showLinksList = !showLinksList"></div>
@@ -52,6 +59,7 @@
 
 <script>
 import catalogue from "@/components/catalogue";
+import {getClassifyTwoList,getArticleList} from "@/api/live_axios";
 
 export default {
   name: "nav",
@@ -61,7 +69,9 @@ export default {
   data(){
     return {
       windowWidth: 0,
-      showLinksList:false
+      showLinksList:false,
+      classify_two_list:[],
+      childrenList:{}
     }
   },
   methods:{
@@ -74,31 +84,57 @@ export default {
       window.addEventListener("resize",this.changeLayout)
       this.showLinksList = this.windowWidth >= 700?true:false
     },
+    //跳路由
     changePage(e){
-      if(!(/^link/.test(e.target.id))){
-        return;
-      }
-      let next_page = e.target.id.split("-")[1];
-      if(next_page === this.$route.name)return;
-      switch (next_page){
-        case "Home":
+      let id = e.target.id;
+      switch (id){
+        case "home":
           this.$router.push("/Home");
           break;
-        case "计算机知识":
-          this.$router.push("/computerknowledge");
+        case "ck":
+          getClassifyTwoList("computerknowledge").then(res=>{
+            this.classify_two_list = res.data["classify_two_list"];
+            res.data["classify_two_list"].forEach(obj=>{
+              this.childrenList[obj] = {
+                show:false,
+                articles:[]
+              }
+            })
+            this.$router.push("/computerknowledge");
+          })
           break
-        case "经历感悟":
-          this.$router.push("/expriences");
+        case "ex":
+          getClassifyTwoList("expriences").then(res=>{
+            this.classify_two_list = res.data["classify_two_list"];
+            res.data["classify_two_list"].forEach(obj=>{
+              this.childrenList[obj] = {
+                show:false,
+                articles:[]
+              }
+            })
+            this.$router.push("/expriences");
+          })
           break;
-        case "关于":
+        case "about":
           this.$router.push("/about");
           break;
+      }
+    },
+    changeList(args){
+      const classify_one = args[0];
+      const classify_two = args[1];
+      if(!this.childrenList[classify_two].show){
+        getArticleList(classify_one, classify_two).then(res=>{
+          this.childrenList[classify_two].articles = res.data["article_list"];
+          this.childrenList[classify_two].show = true;
+          this.$refs.cata.$forceUpdate();
+        })
       }
     }
   },
   computed:{
     getRouteName(){
-      return this.$route.path.slice(1)
+      return this.$route.name;
     },
     mobile(){
       return this.windowWidth < 700;
@@ -199,28 +235,25 @@ $icon_color: #5c2223;
         margin-top: 0.9rem;
         cursor: pointer;
         position: relative;
-
-        .Github_a{
-          color: black;
-          text-decoration: none;
-
-          .Github_svg{
-            height: 1rem;
-            width: 1.2rem;
-          }
-        }
+        white-space: nowrap;
       }
 
       .link_span:hover{
         border-bottom: $link_border_bottom;
       }
 
-      .link_span:nth-child(5):hover{
-        border-bottom: none;
-      }
-
       .chosen_a{
         border-bottom: $link_border_bottom;
+      }
+
+      .Github_a{
+        color: black;
+        text-decoration: none;
+
+        .Github_svg{
+          height: 1rem;
+          width: 1.2rem;
+        }
       }
     }
   }
@@ -263,10 +296,6 @@ $icon_color: #5c2223;
 
       .link_li:hover{
         color: cornflowerblue;
-      }
-
-      .link_li:nth-child(5){
-        color: black;
       }
 
       .link_chosen_li{

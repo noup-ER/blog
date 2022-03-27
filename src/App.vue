@@ -6,16 +6,19 @@
         <router-view></router-view>
       </keep-alive>
     </transition>
+    <svgElements></svgElements>
   </div>
 </template>
 
 <script>
 import navigation from "@/views/blogview/nav";
+import svgElements from "@/components/svg"
 
 export default {
   name: 'App',
   components:{
-    navigation
+    navigation,
+    svgElements
   }
 }
 </script>
@@ -44,6 +47,23 @@ html,body{
 .router_ts-enter-active,.router_ts-leave-active{
   transition: all .3s ease-out;
   position: absolute;
+}
+
+table {
+  border-top: 1px solid #ccc;
+  border-left: 1px solid #ccc;
+}
+table td, table th {
+  border-bottom: 1px solid #ccc;
+  border-right: 1px solid #ccc;
+  height: 2rem;
+}
+
+.hljs-ln{
+  border: none;
+}
+.hljs-ln-line{
+  border: none;
 }
 
 </style>

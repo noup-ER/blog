@@ -1,12 +1,12 @@
 <template>
-  <div class="catalogue">
-    <ul v-for="item in classify_two_list" :key="item" @click="changeList">
-      <li class="kindName_li" :id="'classtitle-'+item">{{item}}</li>
+  <div class="catalogue" @click="changeList">
+    <ul v-for="item in classify_two_list" :key="item">
+      <li class="kindName_li" :id="'list-'+item">{{item}}</li>
       <div v-if="childrenList[item]!== undefined && childrenList[item].show">
         <li class="each_li"
             v-for="(article,index) in childrenList[item].articles"
             :key="i+index" :id="'article-'+item+'-'+article._id"
-            :class="{'chosen_li':current_id === article._id}">{{article.title}}</li>
+            :class="{'chosen_li':current_id === article._id && $route.query.id !== undefined}">{{article.title}}</li>
       </div>
     </ul>
   </div>
@@ -14,15 +14,11 @@
 
 <script>
 
-import {getClassifyTwoList,getArticleList} from "@/api/live_axios";
-
 export default {
   name: "catalogue",
-  props:["classify_one"],
+  props:["classify_two_list","childrenList"],
   data(){
     return{
-      classify_two_list:[],
-      childrenList:{},
       current_id:""
     }
   },
@@ -31,17 +27,10 @@ export default {
     changeList(e){
       try {
         const id = e.target.id;
-        if(/^classtitle-/.test(id)){
+        if(/^list-/.test(id)){
           const classify_two = id.split("-")[1];
-          getArticleList(this.classify_one,classify_two).then(res=>{
-            try {
-              this.childrenList[classify_two].articles = res.data.article_list;
-              this.childrenList[classify_two].show = true;
-              this.$forceUpdate();
-            }catch (err){}
-          }).catch(err=>{
-            this.$message.info(err);
-          })
+          const classify_one = this.$route.name === 'ck'?"computerknowledge":"expriences";
+          this.$emit("changeList",[classify_one,classify_two]);
         }else{
           let temp = id.split("-")[2];
           this.current_id = temp;
@@ -56,34 +45,8 @@ export default {
       }catch (err){
         console.log(err);
       }
-
     }
-  },
-  watch:{
-    classify_one:{
-      handler:function (newvalue,oldvalue){
-        if(newvalue!=="computerknowledge"&&newvalue!=="expriences"){
-          this.current_id = "";
-          this.childrenList = [];
-          this.classify_two_list = [];
-          return;
-        }
-        this.childrenList = {};
-        getClassifyTwoList(newvalue).then(res=>{
-          this.classify_two_list = res.data["classify_two_list"];
-          res.data["classify_two_list"].forEach(obj=>{
-            this.childrenList[obj] = {
-              show:false,
-              articles:[]
-            }
-          })
-        }).catch(err=>{
-          this.$message.info(err);
-        })
-      },
-      immediate:true
-    }
-  },
+  }
 }
 </script>
 
