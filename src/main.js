@@ -6,8 +6,12 @@ import store from "./store"
 
 import {Message} from "element-ui";
 import 'element-ui/lib/theme-chalk/index.css';
+
+
 Vue.component(Message.name,Message)
+
 Vue.prototype.$message = Message;
+
 
 import vueToTop from 'vue-totop'
 Vue.use(vueToTop)
@@ -16,7 +20,8 @@ Vue.use(vueToTop)
 Vue.config.productionTip = false;
 
 Vue.prototype.$axios = axios;
-Vue.prototype.$lodash = require("lodash");
+// Vue.prototype.$lodash = require("lodash");
+
 
 
 const vue = new Vue({
@@ -24,7 +29,6 @@ const vue = new Vue({
   router,
   store
 })
-
 vue.$mount('#app');
 
 export {

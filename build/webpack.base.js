@@ -5,14 +5,15 @@ const VueLoaderPlugin = require('vue-loader/lib/plugin')
 //webpack打包时生成一个html容纳js
 const HTMLPlugin = require('html-webpack-plugin')
 
+// 将css文件分开打包
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+
 const webpack = require('webpack')
 
-//判断是否是开发者环境
-const isDev = process.env.NODE_ENV === 'development';
+
 
 
 const config={
-    mode:"development",
     //在全局加入编译目标：web平台（网站，跑在浏览器中）
     target: 'web',
     // 入口文件
@@ -30,11 +31,11 @@ const config={
         rules: [
             {
                 test:/\.css$/,
-                use:['style-loader','css-loader']
+                use:[process.env.NODE_ENV === 'production'?MiniCssExtractPlugin.loader:"style-loader",'css-loader']
             },
             {
                 test:/\.scss$/,
-                use:['style-loader','css-loader','sass-loader', {
+                use:[process.env.NODE_ENV === 'production'?MiniCssExtractPlugin.loader:"style-loader",'css-loader','sass-loader', {
                     loader: 'sass-resources-loader',
                     options: {
                         resources: [path.resolve(__dirname,"../src/assets/scss/blog-common.scss")]
@@ -88,6 +89,15 @@ const config={
                                     }
                                 }
                             ]
+                        ],
+                        "plugins": [
+                            [
+                                "component",
+                                {
+                                    "libraryName": "element-ui",
+                                    "styleLibraryName": "theme-chalk"
+                                }
+                            ]
                         ]
                     }
                 }
@@ -96,6 +106,11 @@ const config={
     },
     //插件
     plugins: [
+        new MiniCssExtractPlugin({
+            // 使用filename配置可以指定输出的css的文件名和文件位置
+            filename: "css/[name]_[hash:6].css"
+        }),
+
         new webpack.LoaderOptionsPlugin({
             options:{
                 quite:true
@@ -107,18 +122,15 @@ const config={
         //生成html入口文件
         new HTMLPlugin({
             title: "林兆隆的博客",
-            template:'./public/index.html'
-        }),
-
-        // 这可能会对开发模式和发布模式的构建允许不同的行为非常有用。
-        // 如果在开发构建中，而不在发布构建中执行日志记录，则可以使用全局常量来决定是否记录日志。
-        // 这就是 DefinePlugin 的用处，设置它，就可以忘记开发和发布构建的规则。
-        new webpack.DefinePlugin({
-            'process.env': {
-                // 判断是否isDev，若是，则为development；若不是，则为production
-                NODE_ENV: isDev ? '"development"' : '"production"'
-            }
-        }),
+            template:'./public/index.html',
+            minify:{
+                removeRedundantAttributes:true, // 删除多余的属性
+                collapseWhitespace:true, // 折叠空白区域
+                removeAttributeQuotes: true, // 移除属性的引号
+                removeComments: true, // 移除注释
+                collapseBooleanAttributes: true // 省略只有 boolean 值的属性值 例如：readonly checked
+            },
+        })
     ],
     // 路径设置
     resolve: {

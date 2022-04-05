@@ -57,13 +57,28 @@ table td, table th {
   border-bottom: 1px solid #ccc;
   border-right: 1px solid #ccc;
   height: 2rem;
+  text-align: center;
+  vertical-align: middle;
+  word-break: break-word;
 }
+
 
 .hljs-ln{
   border: none;
+  text-align: left;
 }
 .hljs-ln-line{
   border: none;
+  text-align: left;
+}
+
+
+
+.content{
+  img{
+    width: 100%;
+    padding: 1rem;
+  }
 }
 
 </style>

@@ -34,9 +34,12 @@
 import catalogue from "@/components/catalogue";
 import {getArticleById} from "@/api/live_axios";
 //代码高亮
-import hljs from "highlight.js"
+import hljs from 'highlight.js/lib/core'
+import javascript from 'highlight.js/lib/languages/javascript'
 import "highlight.js/styles/agate.css"
 import {hln} from "@/utils/highlightjs-line-numbers.js"
+
+hljs.registerLanguage('javascript', javascript);
 
 import ckCover from "@/components/ckCover"
 import exCover from "@/components/exCover";
@@ -63,10 +66,12 @@ export default {
     }
   },
   methods:{
+    //监听窗口大小
     changeLayout(){
       this.windowWidth = window.innerWidth;
       this.showLinksList = (window.innerWidth >= 700)?false:this.showLinksList;
     },
+    //清空文章
     clearArticle(){
       this.article = {
         title:"",
@@ -88,6 +93,30 @@ export default {
     if(!hljs.lineNumbersBlock){
       hln(window,document,hljs);
     }
+    //防止刷新丢失数据
+    setTimeout(()=>{
+      let id = this.$route.query.id;
+      if(id){
+        getArticleById(id).then(res=>{
+          this.article = res.data.article;
+          this.$nextTick(()=>{
+            document.querySelectorAll("pre code").forEach(item=>{
+              hljs.highlightBlock(item);
+              hljs.lineNumbersBlock(item);
+            })
+            window.scrollTo(0,0)
+            this.$forceUpdate();
+          })
+        }).catch(err=>{
+          this.$message({
+            type:"error",
+            message:err
+          })
+          this.clearArticle();
+        })
+      }
+
+    })
   },
   deactivated() {
     this.clearArticle();
@@ -98,13 +127,12 @@ export default {
     getArticleById(id).then(res=>{
       this.article = res.data.article;
       this.$nextTick(()=>{
-        document.querySelectorAll("img").forEach(item=>{
-          item.style.width = "100%";
-        })
         document.querySelectorAll("pre code").forEach(item=>{
           hljs.highlightBlock(item);
           hljs.lineNumbersBlock(item);
-        })
+        });
+        // 返回顶部
+        window.scrollTo(0,0);
         this.$forceUpdate();
       })
     }).catch(err=>{
