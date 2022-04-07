@@ -5,9 +5,8 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "lint": "vue-cli-service lint",
-    "dev": "webpack-dev-server --mode=development --progress --config build/webpack.dev.js",
-    "build": "cross-env NODE_ENV=production webpack --mode=production --progress --config build/webpack.prod.js",
-    "getChart": "webpack --progress --config build/webpack.dev.js --json > stats.json"
+    "dev": "cross-env process.env.NODE_ENV=development webpack-dev-server --progress --config build/webpack.dev.js",
+    "build": "cross-env NODE_ENV=production webpack --progress --config build/webpack.prod.js"
   },
   "type": "commonjs",
   "dependencies": {
