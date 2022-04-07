@@ -10,9 +10,6 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 const webpack = require('webpack')
 
-
-
-
 const config={
     //在全局加入编译目标：web平台（网站，跑在浏览器中）
     target: 'web',
