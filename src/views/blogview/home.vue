@@ -2,7 +2,7 @@
   <div class="home">
     <div class="interim">
       <img src="@/assets/photos/rose.svg" alt="瓶中玫瑰">
-      <span class="counsel">努力是自愿的，和他人无关</span>
+      <span class="counsel">悠悠洛阳道</span>
       <router-link to="/computerknowledge" tag="div">
         <div class="continue">continue</div>
       </router-link>

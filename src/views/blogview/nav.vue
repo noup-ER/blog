@@ -135,39 +135,45 @@ export default {
   computed:{
     mobile(){
       return this.windowWidth < 700;
+    },
+    route_name(){
+      return this.$route.name;
     }
-  },
-  created() {
-    //解决刷新问题
-    setTimeout(()=>{
-      switch (this.$route.name){
-        case "ck":
-          getClassifyTwoList("computerknowledge").then(res=>{
-            this.classify_two_list = res.data["classify_two_list"];
-            res.data["classify_two_list"].forEach(obj=>{
-              this.childrenList[obj] = {
-                show:false,
-                articles:[]
-              }
-            })
-          });
-          break;
-        case "ex":
-          getClassifyTwoList("expriences").then(res=>{
-            this.classify_two_list = res.data["classify_two_list"];
-            res.data["classify_two_list"].forEach(obj=>{
-              this.childrenList[obj] = {
-                show:false,
-                articles:[]
-              }
-            })
-          })
-          break;
-      }
-    })
   },
   mounted() {
     this.init();
+  },
+  watch:{
+    route_name:{
+      handler:function (newval,oldval){
+        switch (newval){
+          case "ck":
+            getClassifyTwoList("computerknowledge").then(res=>{
+              this.classify_two_list = res.data["classify_two_list"];
+              res.data["classify_two_list"].forEach(obj=>{
+                this.childrenList[obj] = {
+                  show:false,
+                  articles:[]
+                }
+              })
+            });
+            break;
+          case "ex":
+            getClassifyTwoList("expriences").then(res=>{
+              this.classify_two_list = res.data["classify_two_list"];
+              res.data["classify_two_list"].forEach(obj=>{
+                this.childrenList[obj] = {
+                  show:false,
+                  articles:[]
+                }
+              })
+            })
+            break;
+          default:
+            break;
+        }
+      }
+    }
   }
 }
 </script>

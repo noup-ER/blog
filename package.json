@@ -3,10 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "serve": "vue-cli-service serve",
-    "lint": "vue-cli-service lint",
     "dev": "cross-env process.env.NODE_ENV=development webpack-dev-server --progress --config build/webpack.dev.js",
-    "build": "cross-env NODE_ENV=production webpack --progress --config build/webpack.prod.js"
+    "build": "cross-env NODE_ENV=production webpack --progress --config build/webpack.prod.js",
+    "bs": "webpack --progress --config build/webpack.end.js"
   },
   "type": "commonjs",
   "dependencies": {
@@ -66,6 +65,8 @@
     "mini-css-extract-plugin": "^0.9.0",
     "node-notifier": "^10.0.0",
     "npm-install-webpack-plugin": "^4.0.5",
+    "postcss-loader": "^4.3.0",
+    "postcss-preset-env": "^7.4.3",
     "sass": "^1.26.5",
     "sass-loader": "^8.0.2",
     "sass-resources-loader": "^2.2.4",

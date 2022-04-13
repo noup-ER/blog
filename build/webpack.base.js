@@ -8,7 +8,9 @@ const HTMLPlugin = require('html-webpack-plugin')
 // 将css文件分开打包
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
-const webpack = require('webpack')
+const webpack = require('webpack');
+
+const postcss = require("./postcss.config")
 
 const config={
     //在全局加入编译目标：web平台（网站，跑在浏览器中）
@@ -28,11 +30,11 @@ const config={
         rules: [
             {
                 test:/\.css$/,
-                use:[process.env.NODE_ENV === 'production'?MiniCssExtractPlugin.loader:"style-loader",'css-loader']
+                use:[process.env.NODE_ENV === 'production'?MiniCssExtractPlugin.loader:"style-loader",'css-loader',postcss]
             },
             {
                 test:/\.scss$/,
-                use:[process.env.NODE_ENV === 'production'?MiniCssExtractPlugin.loader:"style-loader",'css-loader','sass-loader', {
+                use:[process.env.NODE_ENV === 'production'?MiniCssExtractPlugin.loader:"style-loader",'css-loader',postcss,'sass-loader', {
                     loader: 'sass-resources-loader',
                     options: {
                         resources: [path.resolve(__dirname,"../src/assets/scss/blog-common.scss")]

@@ -3,6 +3,7 @@
 /dist
 /express
 /arithmetic
+/blog_dist
 
 # local env files
 .env.local
