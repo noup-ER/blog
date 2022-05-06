@@ -129,6 +129,7 @@ const config={
                 removeComments: true, // 移除注释
                 collapseBooleanAttributes: true // 省略只有 boolean 值的属性值 例如：readonly checked
             },
+            favicon: "./public/book.svg"
         })
     ],
     // 路径设置

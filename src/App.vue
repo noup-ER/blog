@@ -79,6 +79,17 @@ table td, table th {
     width: 100%;
     padding: 1rem;
   }
+  p{
+    line-height: 2 !important;
+  }
+
+  h1,h2,h3,h4,h5,h6{
+    margin: 0 0 16px !important;
+  }
+
+  pre{
+    margin: 8px 0 !important;
+  }
 }
 
 </style>
