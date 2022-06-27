@@ -12,7 +12,8 @@
 
 <script>
 import navigation from "@/views/blogview/nav";
-import svgElements from "@/components/svg"
+import svgElements from "@/components/svg";
+import "@/assets/scss/editor.scss";
 
 export default {
   name: 'App',
@@ -74,22 +75,21 @@ table td, table th {
 
 
 
-.content{
-  img{
-    width: 100%;
-    padding: 1rem;
-  }
-  p{
-    line-height: 2 !important;
-  }
-
-  h1,h2,h3,h4,h5,h6{
-    margin: 0 0 16px !important;
-  }
-
-  pre{
-    margin: 8px 0 !important;
-  }
-}
+//.content{
+//  img{
+//    padding: 1rem;
+//  }
+//  p{
+//    line-height: 2 !important;
+//  }
+//
+//  h1,h2,h3,h4,h5,h6{
+//    margin: 0 0 16px !important;
+//  }
+//
+//  pre{
+//    margin: 8px 0 !important;
+//  }
+//}
 
 </style>

@@ -1,0 +1,48 @@
+.content{
+  img{
+    padding: 1rem;
+  }
+
+  p{
+    line-height: 2 !important;
+  }
+
+  h1,h2,h3,h4,h5,h6{
+    margin: 0 0 16px !important;
+  }
+
+  pre{
+    margin: 8px 0 !important;
+  }
+
+  table {
+    border-top: 1px solid #ccc;
+    border-left: 1px solid #ccc;
+  }
+  table td, table th {
+    border-bottom: 1px solid #ccc;
+    border-right: 1px solid #ccc;
+    height: 2rem;
+  }
+
+  .hljs-ln{
+    border: none;
+  }
+  .hljs-ln-line{
+    border: none;
+  }
+
+  blockquote{
+    border-left: 8px solid #d0e5f2;
+    display: block;
+    padding: 5px 10px !important;
+    margin: 10px 0 !important;
+    line-height: 1.4;
+    font-size: 100%;
+    background-color: #f1f1f1;
+  }
+
+  hr{
+    margin-bottom: 20px;
+  }
+}
