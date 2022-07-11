@@ -19,9 +19,6 @@ Vue.use(vueToTop)
 Vue.config.productionTip = false;
 
 Vue.prototype.$axios = axios;
-// Vue.prototype.$lodash = require("lodash");
-
-
 
 const vue = new Vue({
   render: h => h(App),
@@ -33,14 +30,4 @@ export {
   vue
 }
 
-// Vue.prototype.$axios.interceptors.request.use(function (config){
-//   vue.$children[0].$refs.coco.style.display = "none"
-//   return config
-// },function (error){
-//   return Promise.reject("not ok")
-// })
-// Vue.prototype.$axios.interceptors.response.use(function (config){
-//   vue.$children[0].$refs.coco.style.display = "black"
-//   return config
-// })
 

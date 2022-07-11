@@ -36,19 +36,31 @@ html,body{
   font-size: 100%;
 }
 
-#app{
-  position: relative;
+body{
+  overflow: hidden;
 }
 
-.router_ts-enter,.router_ts-leave-to{
-  opacity: 0;
-  transform: translateY(20%);
-  width: 100%;
-}
-.router_ts-enter-active,.router_ts-leave-active{
-  transition: all .3s ease-out;
+.router_ts-enter-active{
+  animation: router-enter .3s;
   position: absolute;
 }
+.router_ts-leave-active{
+  animation: router-enter .3s reverse;
+  position: absolute;
+}
+
+@keyframes router-enter {
+  from{
+    opacity: 0;
+    transform: translateY(20%);
+  }
+  to{
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
 
 table {
   border-top: 1px solid #ccc;
@@ -72,24 +84,5 @@ table td, table th {
   border: none;
   text-align: left;
 }
-
-
-
-//.content{
-//  img{
-//    padding: 1rem;
-//  }
-//  p{
-//    line-height: 2 !important;
-//  }
-//
-//  h1,h2,h3,h4,h5,h6{
-//    margin: 0 0 16px !important;
-//  }
-//
-//  pre{
-//    margin: 8px 0 !important;
-//  }
-//}
 
 </style>

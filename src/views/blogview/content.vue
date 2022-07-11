@@ -157,12 +157,13 @@ $usual_transition:all .2s linear;
 
 
   .all1{
-    @include size(100%,100%);
+    width: 100%;
     padding-left: 24rem;
     padding-right: 4rem;
     transition: $usual_transition;
-    min-height: calc(100vh - 3.6rem);
+    height: calc(100vh - 3.6rem);
     position: relative;
+    overflow-y: auto;
   }
 
   .all2{
