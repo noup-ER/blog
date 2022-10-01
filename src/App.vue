@@ -25,6 +25,7 @@ export default {
 </script>
 
 <style lang="scss">
+
 *{
   margin: 0;
   padding: 0;
@@ -32,12 +33,13 @@ export default {
   -webkit-tap-highlight-color:rgba(0,0,0,0);
 }
 
-html,body{
-  font-size: 100%;
-}
-
 body{
   overflow: hidden;
+  font-size: 100%;
+  font-family: -apple-system, BlinkMacSystemFont,
+  "Segoe UI", "Roboto", "Oxygen",
+  "Ubuntu", "Cantarell", "Fira Sans",
+  "Droid Sans", "Helvetica Neue", sans-serif;
 }
 
 .router_ts-enter-active{

@@ -47,7 +47,7 @@ const config={
             },
             //处理图片及字体
             {
-                test: /\.(png|jpe?g|gif|svg|ttf|woff)$/,
+                test: /\.(png|jpe?g|gif|svg|ttf|woff|otf)$/,
                 use:[{
                     loader: 'url-loader',
                     options:{
