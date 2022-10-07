@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "cross-env process.env.NODE_ENV=development webpack-dev-server --progress --config build/webpack.dev.js",
     "build": "cross-env NODE_ENV=production webpack --progress --config build/webpack.prod.js",
+    "serve": "node express/blog.js",
     "bs": "webpack --progress --config build/webpack.end.js"
   },
   "type": "commonjs",

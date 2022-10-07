@@ -87,4 +87,8 @@ table td, table th {
   text-align: left;
 }
 
+code{
+  font-family: Consolas, Monaco, "Andale Mono", "Ubuntu Mono", monospace;
+}
+
 </style>

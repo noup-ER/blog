@@ -36,10 +36,14 @@ import {getArticleById} from "@/api/live_axios";
 //代码高亮
 import hljs from 'highlight.js/lib/core'
 import javascript from 'highlight.js/lib/languages/javascript'
+import html from 'highlight.js/lib/languages/xml'
+import css from 'highlight.js/lib/languages/css'
 import "highlight.js/styles/agate.css"
 import {hln} from "@/utils/highlightjs-line-numbers.js"
 
 hljs.registerLanguage('javascript', javascript);
+hljs.registerLanguage('html', html);
+hljs.registerLanguage("css",css)
 
 import ckCover from "@/components/ckCover"
 import exCover from "@/components/exCover";
@@ -101,6 +105,7 @@ export default {
           this.article = res.data.article;
           this.$nextTick(()=>{
             document.querySelectorAll("pre code").forEach(item=>{
+              console.log(item);
               hljs.highlightBlock(item);
               hljs.lineNumbersBlock(item);
             })
